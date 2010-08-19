@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 $:.unshift File.dirname(__FILE__)
 require 'gallery_image'
+require 'gallery'
 require 'rubygems'
 require 'RMagick'
 require 'erb'
@@ -13,6 +14,8 @@ height=120
 
 FileUtils.mkdir_p "_rubygal"
 
+
+@gallery = Gallery.new
 for imagepath in images
   image_copy_path = "_rubygal/" + imagepath
   FileUtils.cp(imagepath, image_copy_path)
@@ -36,9 +39,17 @@ for imagepath in images
   @image = GalleryImage.new
   @image.filename = imagepath
   @image.thumb_filename = thumbname
-  html_path = "_rubygal/" + imagepath.sub(ext,".html")
+  @image.page_filename = imagepath.sub(ext,".html")
+  html_path = "_rubygal/" + @image.page_filename
   html_file = File.new(html_path, "w")
   html_file.write(rhtml.result(binding))
   html_file.close
   
+  @gallery.images << @image
 end
+
+rhtml = ERB.new(File.new(File.dirname(__FILE__) + "/gallery.html.erb").read)
+html_path = "_rubygal/index.html"
+html_file = File.new(html_path, "w")
+html_file.write(rhtml.result(binding))
+html_file.close

@@ -1,0 +1,14 @@
+<html>
+<head>
+  <title>Teh gallery</title>
+</head>
+<body>
+  <ul>
+  <% @gallery.images.each do |image| %>
+    <li>
+      <a href="<%= image.page_filename %>"><img src="<%= image.thumb_filename %>" /></a>
+    </li>
+  <% end %>
+  </ul>
+</body>
+</html>
