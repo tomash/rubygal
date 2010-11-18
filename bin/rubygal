@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+
+$:.unshift File.join(File.dirname(__FILE__), *%w[.. lib])
+
+require 'rubygal'
+include Rubygal
+
+
+images = Dir["*.{gif,jpg,jpeg,png}"]
+images.sort! # by name
+
+g = Generator.new("_gallery")
+g.template_dir = File.join(File.dirname(__FILE__), "../templates")
+rhtml = g.generate(images)
+
